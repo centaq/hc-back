@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
-    "lib": ["es6", "dom"],
+    "lib": ["es2017", "dom", "dom.iterable", "scripthost"],
     "allowJs": true,
     "sourceMap": true,
     "outDir": "dist",
