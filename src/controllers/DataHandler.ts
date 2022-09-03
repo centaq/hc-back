@@ -105,7 +105,7 @@ export class DataHandler {
             let d = tmp[index];
             data[index] = { data: d, stats: {}};
         }
-        if (stats) {
+        if (stats && false) {
             for(let sensor in schema) {
                 for(let index in schema[sensor]) {
                     const stat = schema[sensor][index];
