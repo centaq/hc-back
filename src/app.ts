@@ -1,4 +1,4 @@
-import express from "express";
+import express, { RequestHandler } from "express";
 var path = require('path');
 import * as bodyParser from "body-parser";
 import { GlobalRoutes } from "./routes/global";
@@ -23,8 +23,7 @@ class App {
         this.app.get('/', (req, res) => {
             res.sendFile(__dirname + '/public/', 'index.html');
         });
-        
-        this.app.use('/', express.static(__dirname + '/public'));
+        this.app.use('/', <RequestHandler>express.static(__dirname + '/public'));
     }
 
     private dirSetup(): void{
