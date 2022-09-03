@@ -4,6 +4,9 @@ import { FileStorage } from '../controllers/FileStorage';
 import { Guid } from 'guid-typescript';
 import { DataHandler } from '../controllers/DataHandler';
 import { SessionHelper } from '../helpers/SessionHelper';
+import { CameraHelper } from "../helpers/CameraHelper";
+
+require('dotenv').config();
 
 export class APIRoutes { 
     static configure(app : Application): void {
@@ -51,38 +54,19 @@ export class APIRoutes {
             
         });
         
-        app.route('/api/camera/:no').get(async(req: Request, res: Response) => {
-            let ip = 180 + Number(req.params.no);
-            var uri = 'http://user:pass@192.168.0.' + String(ip) + '/ISAPI/Streaming/Channels/1/Picture';
-            /*httpRequest.get(uri)
-            .on('error', function(err : any) {
-              console.log(err)
-            }).pipe(res).on('close', () => {
+        app.route('/api/camera/:no/:ch').get(async(req: Request, res: Response) => {
+            httpRequest.get(CameraHelper.buildCameraPreviewUrl(req.params.no, req.params.ch))
+            .auth(process.env.CONF_CAMERA_USER!, process.env.CONF_CAMERA_PASS!, false) //Digest auth
+            .on('error', (err: any) => {
+                console.log('error');
+                console.log(err);
+            })
+            .pipe(res).on('close', () => {
                 res.end();
             }).on('timeout', () => {
                 console.log('timeout');
-            });*/
-            httpRequest.head(uri, { timeout: 10000}, function(err :any, res1: any, body:any ){
-                if (err) {
-                    //console.log(uri);
-                    console.log(err);
-                    console.log(res1);
-                    console.log(body);
-                    res.status(400);
-                    res.end();
-                } else {
-                    res.contentType('image/jpeg');
-                    res.status(200);
-                    //console.log(res1);
-                    httpRequest(uri).pipe(res).on('close', () => {
-                        res.end();
-                    }).on('timeout', () => {
-                        console.log('timeout');
-                    });
-                }
-            }).on('error', function(err : any) {
-                alert('Błąd - otwórz consolę');
-                console.log('on error');
+            }).on('error', (err: any) => {
+                console.log('error');
                 console.log(err);
             });
         });
