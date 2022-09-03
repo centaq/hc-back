@@ -36,7 +36,7 @@ export class APIRoutes {
         });
 
         app.route('/api/data').get(async(req: Request, res: Response) => {
-            const data = JSON.parse(req.query.data);
+            const data = JSON.parse(<string>req.query.data);
             let schemaBase = FileStorage.read('tokens', data.token);
             DataHandler.retrieve(schemaBase, data.stats, (result: any) => {
                 res.status(200).send({params: data.token, value: result});
@@ -49,7 +49,7 @@ export class APIRoutes {
         });
 
         app.route('/api/stats').get(async(req: Request, res: Response) => {
-            const data = JSON.parse(req.query.data)
+            const data = JSON.parse(<string>req.query.data)
             res.status(200).send(await DataHandler.getStats(data));
             
         });
