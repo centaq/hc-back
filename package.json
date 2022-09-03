@@ -1,0 +1,30 @@
+{
+  "name": "dom_server",
+  "version": "1.0.0",
+  "main": "dist/server.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/express": "^4.16.1",
+    "@types/mysql": "^2.15.5",
+    "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.16.4",
+    "guid-typescript": "^1.0.9",
+    "json-fs-store": "^1.0.1",
+    "mysql": "^2.16.0",
+    "node-persist": "^3.0.4",
+    "nodemon": "^2.0.12",
+    "request": "^2.88.0",
+    "tslib": "^1.9.3",
+    "typescript": "^3.2.4"
+  },
+  "scripts": {
+    "start": "nodemon ./dist/server.js",
+    "build": "tsc",
+    "dev": "ts-node ./lib/server.ts"
+  },
+  "dependencies": {
+    "@types/request": "^2.48.4",
+    "dotenv": "^8.2.0"
+  }
+}
