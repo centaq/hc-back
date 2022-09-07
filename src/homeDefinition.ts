@@ -14,7 +14,8 @@ export class homeDefinition {
                 1: 'temperature_40', //temperatura
                 2: 'light_level_00', //swiatlo
                 3: 'humidity_00', //wilgotnosc
-                4: 'pressure_00'
+                4: 'pressure_00',
+                5: 'temperature_28' //temp zewnetrzna
             }
         },
         1: {
