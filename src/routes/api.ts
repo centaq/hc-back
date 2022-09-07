@@ -39,7 +39,7 @@ export class APIRoutes {
             const data = JSON.parse(<string>req.query.data);
             let schemaBase = FileStorage.read('tokens', data.token);
             DataHandler.retrieve(schemaBase, data.stats, (result: any) => {
-                res.status(200).send({params: data.token, value: result});
+                res.status(200).send({params: data.token, value: result, date: Date.now()});
             });
         });
 
