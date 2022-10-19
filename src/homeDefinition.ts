@@ -7,15 +7,20 @@ export class homeDefinition {
                 0: 1, //`watering_enable`,
                 1: 'outputs_05 & (1 << 0) != 0',
                 2: 'outputs_05 & (1 << 0) != 0',
+                3: 'outputs_05 & (1 << 0) != 0',
                 101: 0,//'watering_auto_00 & (1 << 0) != 0',
-                102: 1//'watering_auto_00 & (1 << 1) != 0'
+                102: 1,//'watering_auto_00 & (1 << 1) != 0'
+                103: 0
+            },
+            2: { //oswietlenie zewnetrzne
+                0: 'outputs_05 & (1 << 0) != 0', //swiatlo nad garazem
+                100: '0' //kolumna z pozostalym czasem do wylaczenia
             },
             15: { //zewnątrz
-                1: 'temperature_40', //temperatura
+                1: 'temperature_28', //temperatura
                 2: 'light_level_00', //swiatlo
                 3: 'humidity_00', //wilgotnosc
                 4: 'pressure_00',
-                5: 'temperature_28' //temp zewnetrzna
             }
         },
         1: {
