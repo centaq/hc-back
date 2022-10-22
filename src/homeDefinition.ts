@@ -1,3 +1,5 @@
+import { parentPort } from "worker_threads";
+
 export class homeDefinition {
     public static stateTable: string = 'state';
 
@@ -87,11 +89,6 @@ export class homeDefinition {
                 17: homeDefinition.diffValue('energy_meter_01'), //eneergia kotlownia
                 18: homeDefinition.diffValue('energy_meter_02'),  //energia szafa
                 19: homeDefinition.diffValue('energy_meter_04') //eneergia teletechnika
-            },
-            100: { //woda
-                1: 'pressure_level_00',  //cisnienie wody
-                2: 'NOT ' + this.output(21),  //zamówr wody
-                3: 'NOT ' + this.output(121)  //przekaznik pompy
             }
         },
         2: {
@@ -149,6 +146,46 @@ export class homeDefinition {
         3: {//strych
             1: {
                 1: 'temperature_19' // wylaz dachowy
+            }
+        },
+        10: {
+            0: { //woda
+                1: 'pressure_level_00',  //cisnienie wody
+                2: 'NOT ' + this.output(21),  //zamówr wody
+                3: 'NOT ' + this.output(121)  //przekaznik pompy
+            },
+            10: { //alarm
+                0: 'last_movement_00', //'wiatrolap'
+                1: 'last_movement_01', //'lazienka'
+                2: 'last_movement_02', //'kuchnia'
+                3: 'last_movement_03', //'gabinet'
+                4: 'last_movement_04', //'hall'
+                5: 'last_movement_05', //'jadalnia'
+                6: 'last_movement_06', //'salon'
+                7: 'last_movement_07', //'garaz'
+                8: 'last_movement_08', //'spizarnia'
+                9: 'last_movement_09', //'kotlownia'
+                10: 'last_movement_10', //'schody'
+                11: 'last_movement_11', //'korytarz'
+                12: 'last_movement_12', //'sypialnia'
+                13: 'last_movement_13', //'garderoba'
+                14: 'last_movement_14', //'P1'
+                15: 'last_movement_15', //'P2'
+                16: 'last_movement_16', //'lazienka'
+                17: 'last_movement_17', //'bawialnia'
+                18: 'last_movement_18', //'pralnia'
+                19: 'last_movement_19', //'P3'
+                20: 'last_movement_20', //'P4'
+                21: 'last_movement_21', //'gospodarczy'
+                22: 'last_movement_22', //'alarm wejsce zewnatrz'
+                23: 'last_movement_23', //'alarm taras zewnatrz'
+            },
+            11: {
+                0: 'LEAST(9999, last_movement_00, last_movement_01, last_movement_02, last_movement_03, last_movement_04, last_movement_05, last_movement_06, last_movement_10)', //'parter'
+                1: 'LEAST(9999, last_movement_07, last_movement_08, last_movement_09)', //garaz
+                2: 'LEAST(9999, last_movement_11, last_movement_12, last_movement_13, last_movement_14, last_movement_15, last_movement_16, last_movement_17, last_movement_18, last_movement_19, last_movement_20)', //'pietro'
+                3: 'LEAST(9999, last_movement_21)', //'gospodarczy'
+                4: 'LEAST(9999, last_movement_22, last_movement_22)', //'zewnetrzne'
             }
         }
     }
