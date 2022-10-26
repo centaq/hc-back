@@ -1,4 +1,4 @@
-import { ISensorsSchema, ISensorSchema } from '../interfaces/IGlobal';
+import { ISensorsSchema, ISensorSchema, IRequestSchema } from '../interfaces/IGlobal';
 import { homeDefinition } from '../homeDefinition';
 import { PLCNotifier } from './PLCNotifier';
 import { QueryHelper } from '../helpers/QueryHelper';
@@ -7,7 +7,7 @@ import { SQLHelper } from '../helpers/SQLHelper';
 export class DataHandler {
 
     public static async retrieve(req: any, stats: boolean, callback: (data: any) => void) {
-        let schema: ISensorsSchema = this.parseRequest(req);
+        let schema: IRequestSchema = this.parseRequest(req);
         let data = await this.retrieveData(schema, stats).catch((reason: any) => {
             console.log('err');
             console.log(reason);
@@ -46,19 +46,28 @@ export class DataHandler {
         await PLCNotifier.notify(id);
     }
 
-    public static parseRequest(request: any): ISensorsSchema {
-        let schema : ISensorsSchema = {};
+    public static parseRequest(request: any): IRequestSchema {
+        let schema : IRequestSchema = {
+            conf: [],
+            state: {}
+        }
+        console.log(request);
 
         for(let ctrlUid in request) {
             const ctrl = request[ctrlUid];
             let tmp : any = {};
             for(let sensorId in ctrl.sensors) {
                 const sensor = ctrl.sensors[sensorId];
-                if (!(sensorId in schema)) {
-                    schema[sensorId] = {};
-                }
-                if (sensor.stats) {
-                    schema[sensorId][ctrlUid] = sensor.statsConfig;
+                console.log(sensorId);
+                if (sensorId.startsWith("c.")) {
+                    schema.conf.push(sensorId.substring("c.".length));
+                } else {
+                    if (!(sensorId in schema.state)) {
+                        schema.state[sensorId] = {};
+                    }
+                    if (sensor.stats) {
+                        schema.state[sensorId][ctrlUid] = sensor.statsConfig;
+                    }
                 }
             }
         }
@@ -93,22 +102,31 @@ export class DataHandler {
         return {data: tmp, guid: param.guid};
     }
 
-    private static async retrieveData(schema: ISensorsSchema, stats: boolean) {
+    private static async retrieveData(schema: IRequestSchema, stats: boolean) {
         let data: any = {};
-        if (Object.keys(schema).length == 0) {
+        if (Object.keys(schema.state).length == 0 && Object.keys(schema.conf).length == 0) {
             return data;
         }
         let conn = SQLHelper.create();
         await SQLHelper.connect(conn);
-        let tmp: any = (<any>(await SQLHelper.query(conn, QueryHelper.buildSensorSql(schema))))[0];
-        for(let index in tmp) {
-            let d = tmp[index];
-            data[index] = { data: d, stats: {}};
+        if (Object.keys(schema.state).length> 0) {
+            let tmp: any = (<any>(await SQLHelper.query(conn, QueryHelper.buildSensorStateSql(schema.state))))[0];
+            for(let index in tmp) {
+                let d = tmp[index];
+                data[index] = { data: d, stats: {}};
+            }
+        }
+        if (schema.conf.length > 0) {
+            let tmp : any = (<any>(await SQLHelper.query(conn, QueryHelper.buildSensorConfSql(schema.conf))))[0];
+            for(let index in tmp) {
+                let d = tmp[index];
+                data[index] = { data: d, stats: {}};
+            }
         }
         if (stats && false) {
             for(let sensor in schema) {
-                for(let index in schema[sensor]) {
-                    const stat = schema[sensor][index];
+                for(let index in schema.state[sensor]) {
+                    const stat = schema.state[sensor][index];
                     data[sensor].stats[index] = 
                         this.parseStats(await SQLHelper.query(conn, QueryHelper.buildStatSql(sensor, stat)));;
                 }

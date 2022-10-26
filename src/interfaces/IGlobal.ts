@@ -1,5 +1,6 @@
 export interface IRequestSchema {
-
+    state: ISensorsSchema;
+    conf: string[];
 }
 
 export interface ISensorsSchema {

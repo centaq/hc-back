@@ -5,18 +5,28 @@ import { join } from 'path';
 export class QueryHelper {
     
 
-    public static buildSensorSql(schema: ISensorsSchema): any {
+    public static buildSensorConfSql(confArr: string[]): any {
+        let query: string = '';
+        for(let conf of confArr) {
+            if (query.length > 0) 
+                query += ', ';
+            query += homeDefinition.translateToConfSql(conf) + ' AS `c.' + conf + '`';
+        }
+        return 'SELECT ' + query + ' FROM ' + homeDefinition.confTable + ' ORDER BY ID DESC LIMIT 1';
+    }
+
+    public static buildSensorStateSql(schema: ISensorsSchema): any {
         let query: string = '';
         for(let key in schema) {
             if (query.length > 0) 
                 query += ', ';
-            query += homeDefinition.translateToSql(key) + ' AS `' + key + '`';
+            query += homeDefinition.translateToStateSql(key) + ' AS `' + key + '`';
         }
         return 'SELECT ' + query + ' FROM ' + homeDefinition.stateTable + ' ORDER BY ID DESC LIMIT 1';
     }
 
     public static buildStatSql(key: string, stat: any): any {
-        const col = homeDefinition.translateToSql(key) + ' AS `val`';
+        const col = homeDefinition.translateToStateSql(key) + ' AS `val`';
         return this.buildStatsSqlInternal(stat, col, "val");
     }
 

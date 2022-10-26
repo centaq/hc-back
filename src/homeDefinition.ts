@@ -2,6 +2,7 @@ import { parentPort } from "worker_threads";
 
 export class homeDefinition {
     public static stateTable: string = 'state';
+    public static confTable: string = 'conf';
 
     private static def: any = {
         0: {
@@ -186,6 +187,55 @@ export class homeDefinition {
                 2: 'LEAST(9999, last_movement_11, last_movement_12, last_movement_13, last_movement_14, last_movement_15, last_movement_16, last_movement_17, last_movement_18, last_movement_19, last_movement_20)', //'pietro'
                 3: 'LEAST(9999, last_movement_21)', //'gospodarczy'
                 4: 'LEAST(9999, last_movement_22, last_movement_22)', //'zewnetrzne'
+            },
+            20: { //ogrzewanie
+                1: 'outputs_00 & (1 << 0) != 0', //salon
+                2: 'outputs_00 & (1 << 1) != 0', //wykusz
+                3: 'outputs_00 & (1 << 2) != 0', //kuchnia
+                4: 'outputs_00 & (1 << 3) != 0', //gabinet
+                5: 'outputs_00 & (1 << 4) != 0', //hol
+                6: 'outputs_00 & (1 << 5) != 0', //wiatrolap
+                7: 'outputs_00 & (1 << 6) != 0', //lazienka
+                8: 'outputs_00 & (1 << 7) != 0', //garaz
+                15: 'outputs_01 & (1 << 1) != 0', //korytarz
+                16: 'outputs_03 & (1 << 0) != 0', //sypialnia
+                17: 'outputs_03 & (1 << 1) != 0', //bawialnia
+                18: 'outputs_03 & (1 << 2) != 0', //p1
+                19: 'outputs_03 & (1 << 3) != 0', //p2
+                20: 'outputs_03 & (1 << 4) != 0', //lazienka
+                21: 'outputs_03 & (1 << 5) != 0', //bawialnia
+                22: 'outputs_03 & (1 << 6) != 0', //pralnia
+                23: 'outputs_03 & (1 << 7) != 0', //P3
+                24: 'outputs_02 & (1 << 0) != 0' //P4
+            },
+            21: {
+                0: 'outputs_02 & (1 << 3) != 0', //pompa dół
+                1: 'outputs_02 & (1 << 4) != 0' //pompa góra
+            }
+        }
+    }
+
+    private static confDef: any = {
+        10: {
+            20: {
+                1: 'set_temperature_00', //salon
+                2: 'set_temperature_01', //wykusz
+                3: 'set_temperature_02', //kuchnia
+                4: 'set_temperature_03', //gabinet
+                5: 'set_temperature_04', //hol
+                6: 'set_temperature_05', //wiatrolap
+                7: 'set_temperature_06', //lazienka
+                8: 'set_temperature_07', //garaz
+                15: 'set_temperature_08', //korytarz
+                16: 'set_temperature_09', //sypialnia
+                17: 'set_temperature_10', //bawialnia
+                18: 'set_temperature_11', //p1
+                19: 'set_temperature_12', //p2
+                20: 'set_temperature_13', //lazienka
+                21: 'set_temperature_14', //bawialnia
+                22: 'set_temperature_15', //pralnia
+                23: 'set_temperature_16', //P3
+                24: 'set_temperature_17' //P4
             }
         }
     }
@@ -204,9 +254,22 @@ export class homeDefinition {
         return 'ROUND(' + col + ' - ( SELECT c.' + col + ' FROM ' + this.stateTable + ' AS c WHERE c.`date` < SUBTIME(' + this.stateTable + '.`date`, "' + hours + ':0:0") ORDER BY ID DESC LIMIT 1,1) ,3)';
     }
 
-    public static translateToSql(sensor: string) {
+    public static translateToStateSql(sensor: string) {
         let path: string[] = sensor.split('.');
         let val = this.def;
+        try {
+            for(let p in path) {
+                val = val[path[p]];
+            }
+        } catch {
+            return 0;
+        }
+        return val;
+    }
+
+    public static translateToConfSql(sensor: string) {
+        let path: string[] = sensor.split('.');
+        let val = this.confDef;
         try {
             for(let p in path) {
                 val = val[path[p]];
