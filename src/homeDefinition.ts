@@ -218,24 +218,24 @@ export class homeDefinition {
     private static confDef: any = {
         10: {
             20: {
-                1: 'set_temperature_00', //salon
-                2: 'set_temperature_01', //wykusz
-                3: 'set_temperature_02', //kuchnia
-                4: 'set_temperature_03', //gabinet
-                5: 'set_temperature_04', //hol
-                6: 'set_temperature_05', //wiatrolap
-                7: 'set_temperature_06', //lazienka
-                8: 'set_temperature_07', //garaz
-                15: 'set_temperature_08', //korytarz
-                16: 'set_temperature_09', //sypialnia
-                17: 'set_temperature_10', //bawialnia
-                18: 'set_temperature_11', //p1
-                19: 'set_temperature_12', //p2
-                20: 'set_temperature_13', //lazienka
-                21: 'set_temperature_14', //bawialnia
-                22: 'set_temperature_15', //pralnia
-                23: 'set_temperature_16', //P3
-                24: 'set_temperature_17' //P4
+                0: 'set_temperature_00', //wiatrolap 
+                1: 'set_temperature_01', //hol 
+                2: 'set_temperature_02', //lazienka 
+                3: 'set_temperature_03', //wykusz 
+                4: 'set_temperature_04', //kuchnia
+                5: 'set_temperature_05', //gabinet
+                6: 'set_temperature_06', //salon
+                7: 'set_temperature_07', //garaz
+                8: 'set_temperature_08', //korytarz
+                9: 'set_temperature_09', //sypialnia
+                10: 'set_temperature_10', //bawialnia
+                11: 'set_temperature_11', //p1
+                12: 'set_temperature_12', //p2
+                13: 'set_temperature_13', //lazienka
+                14: 'set_temperature_14', //bawialnia
+                15: 'set_temperature_15', //pralnia
+                16: 'set_temperature_16', //P3
+                17: 'set_temperature_17' //P4
             }
         }
     }
