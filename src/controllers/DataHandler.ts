@@ -39,7 +39,6 @@ export class DataHandler {
         }
         param.push(req.cmd);
         param.push(req.value);
-        console.log(param);
         
         let tmp : any = await SQLHelper.executeQuery('INSERT INTO action_queue (floor, room, sensor, cmd, value) VALUES (?,?,?,?,?)', param);
         var id = tmp.insertId;
@@ -51,14 +50,12 @@ export class DataHandler {
             conf: [],
             state: {}
         }
-        console.log(request);
 
         for(let ctrlUid in request) {
             const ctrl = request[ctrlUid];
             let tmp : any = {};
             for(let sensorId in ctrl.sensors) {
                 const sensor = ctrl.sensors[sensorId];
-                console.log(sensorId);
                 if (sensorId.startsWith("c.")) {
                     schema.conf.push(sensorId.substring("c.".length));
                 } else {
