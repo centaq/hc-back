@@ -211,6 +211,10 @@ export class homeDefinition {
             21: {
                 0: 'outputs_02 & (1 << 3) != 0', //pompa dół
                 1: 'outputs_02 & (1 << 4) != 0' //pompa góra
+            },
+            30: {
+                0: 'inputs_04 & (1 << 5) != 0', //S32 - pompy
+                1: 'inputs_04 & (1 << 4) != 0' //S34 - elektrozawory
             }
         }
     }
