@@ -16,7 +16,7 @@ export class homeDefinition {
                 103: 0
             },
             2: { //oswietlenie zewnetrzne
-                0: 'outputs_05 & (1 << 0) != 0', //swiatlo nad garazem
+                0: 'outputs_12 & (1 << 4) != 0', //swiatlo nad garazem
                 100: '0' //kolumna z pozostalym czasem do wylaczenia
             },
             15: { //zewnątrz
@@ -215,6 +215,13 @@ export class homeDefinition {
             30: {
                 0: 'inputs_04 & (1 << 5) != 0', //S32 - pompy
                 1: 'inputs_04 & (1 << 4) != 0' //S34 - elektrozawory
+            }
+        },
+        100: {  //specjalne
+            0: { //swiateczne
+                0: 'outputs_13 & (1 << 0) != 0', // w podbitce
+                1: 'outputs_15 & (1 << 5) != 0', // gniazdko na terenie
+                2: '0' // choinka w domu
             }
         }
     }
