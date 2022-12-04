@@ -1,15 +1,25 @@
 export interface IRequestSchema {
     state: ISensorsSchema;
     conf: string[];
+    aggr: IAggregationsSchema;
 }
 
 export interface ISensorsSchema {
     [sensor:string]: ISensorSchema;
 }
 
+export interface IAggregationsSchema {
+    [sensor:string]: IAggregationSchema;
+}
+
 export interface ISensorSchema {
     [stats:string]: IStatsSchema;
     //stats: IStatsSchema[];
+}
+
+export interface IAggregationSchema {
+    type: string;
+    selector: string;
 }
 
 export interface IStatsSchema {

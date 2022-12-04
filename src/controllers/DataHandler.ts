@@ -48,6 +48,7 @@ export class DataHandler {
     public static parseRequest(request: any): IRequestSchema {
         let schema : IRequestSchema = {
             conf: [],
+            aggr: {},
             state: {}
         }
 
@@ -58,6 +59,11 @@ export class DataHandler {
                 const sensor = ctrl.sensors[sensorId];
                 if (sensorId.startsWith("c.")) {
                     schema.conf.push(sensorId.substring("c.".length));
+                } else if (sensorId.startsWith("avg.cd.")) {
+                    schema.aggr[sensorId.substring("avg.cd.".length)] = {
+                        type: "avg",
+                        selector: "cd"
+                    };
                 } else {
                     if (!(sensorId in schema.state)) {
                         schema.state[sensorId] = {};
@@ -118,6 +124,16 @@ export class DataHandler {
             for(let index in tmp) {
                 let d = tmp[index];
                 data[index] = { data: d, stats: {}};
+            }
+        }
+        if (Object.keys(schema.aggr).length > 0) {
+            const queries = QueryHelper.buildSensorAggrSql(schema.aggr);
+            for (let q in queries) {
+                let tmp : any = (<any>(await SQLHelper.query(conn, queries[q])))[0];
+                for(let index in tmp) {
+                    let d = tmp[index];
+                    data[index] = { data: d, stats: {}};
+                }
             }
         }
         if (stats && false) {

@@ -1,4 +1,5 @@
 import { parentPort } from "worker_threads";
+import { IAggregationSchema } from "./interfaces/IGlobal";
 
 export class homeDefinition {
     public static stateTable: string = 'state';
@@ -276,6 +277,19 @@ export class homeDefinition {
             return 0;
         }
         return val;
+    }
+
+    public static translateToAggrSql(sensor: string, aggr: string) {
+        let path: string[] = sensor.split('.');
+        let val = this.def;
+        try {
+            for(let p in path) {
+                val = val[path[p]];
+            }
+        } catch {
+            return 0;
+        }
+        return aggr.toUpperCase() + '(' + val + ')';
     }
 
     public static translateToConfSql(sensor: string) {

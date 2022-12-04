@@ -1,5 +1,5 @@
 import { homeDefinition } from '../homeDefinition';
-import { ISensorsSchema } from '../interfaces/IGlobal';
+import { IAggregationSchema, IAggregationsSchema, ISensorsSchema } from '../interfaces/IGlobal';
 import { join } from 'path';
 
 export class QueryHelper {
@@ -23,6 +23,25 @@ export class QueryHelper {
             query += homeDefinition.translateToStateSql(key) + ' AS `' + key + '`';
         }
         return 'SELECT ' + query + ' FROM ' + homeDefinition.stateTable + ' ORDER BY ID DESC LIMIT 1';
+    }
+
+    public static buildSensorAggrSql(schema: IAggregationsSchema): any {
+        let query: { [key: string]: string } = {};
+        for(let key in schema) {
+            if (query[schema[key].selector] == undefined) 
+                query[schema[key].selector] = '';
+            else
+                query[schema[key].selector] += ', ';
+            let k = schema[key].type + '.' + schema[key].selector + '.' + key;
+            query[schema[key].selector] += homeDefinition.translateToAggrSql(key, schema[key].type) + ' AS `' + k + '`';
+        }
+        for (let q in query) {
+            let where = '0=1';
+            if (q == 'cd') 
+                where = 'date_stamp = CURDATE()';
+            query[q] = 'SELECT ' + query[q] + ' FROM ' + homeDefinition.stateTable + ' WHERE ' + where;
+        }
+        return query;
     }
 
     public static buildStatSql(key: string, stat: any): any {
