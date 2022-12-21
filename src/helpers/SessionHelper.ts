@@ -1,35 +1,45 @@
 
 import { Guid } from 'guid-typescript';
-import { ISession } from '../interfaces/IGlobal';
+import { IIsLoggedResult, ISession } from '../interfaces/IGlobal';
 import { FileStorage } from '../controllers/FileStorage';
 
 export class SessionHelper {
-    public static create(): ISession {
+    public static create(user: string): ISession {
         let date: Date = new Date();
         date.setDate(date.getDate() + 365);
         
         let session: string = Guid.create().toString();
         let sessionData: ISession = {
             id: session,
-            expiry: date
+            expiry: date,
+            user: user
         };
         FileStorage.save('sessions', session, sessionData);
         return sessionData;
     }
-    public static isLogged(session: string): boolean {
+
+    public static isLogged(session: string): IIsLoggedResult {
         if (session == undefined) {
-            return false;
+            return {
+                result: false
+            };
         }
 
         let sessionData = FileStorage.read('sessions', session);
         if (sessionData == undefined) {
-            return false;
+            return {
+                result: false
+            };
         }
         const expiry: Date = new Date(sessionData.expiry);
-        let result = false;
         if (sessionData != undefined && expiry.getTime() > Date.now()) {
-            result = true;
+            return {
+                result: true,
+                session: sessionData
+            };
         }
-        return result;
+        return {
+            result: false
+        };
     }
 }

@@ -32,4 +32,10 @@ export interface IStatsSchema {
 export interface ISession {
     id: string;
     expiry: Date;
+    user: string;
+}
+
+export interface IIsLoggedResult {
+    result: boolean;
+    session?: ISession;
 }
