@@ -86,11 +86,17 @@ export class homeDefinition {
                 12: 'energy_meter_01', //eneergia kotlownia
                 13: 'energy_meter_02',  //energia szafa
                 14: 'energy_meter_04', //eneergia teletechnika
-                15: homeDefinition.diffValue('energy_meter_03'), //eneergia całkowita
-                16: homeDefinition.diffValue('energy_meter_00'),  //energia studnia
-                17: homeDefinition.diffValue('energy_meter_01'), //eneergia kotlownia
-                18: homeDefinition.diffValue('energy_meter_02'),  //energia szafa
-                19: homeDefinition.diffValue('energy_meter_04') //eneergia teletechnika
+                15: 'energy_meter_05', //eneergia reku
+                16: 'energy_meter_06', //eneergia kuchnia
+                17: 'energy_meter_07', //eneergia pralnia
+                20: homeDefinition.diffValue('energy_meter_03'), //eneergia całkowita
+                21: homeDefinition.diffValue('energy_meter_00'),  //energia studnia
+                22: homeDefinition.diffValue('energy_meter_01'), //eneergia kotlownia
+                23: homeDefinition.diffValue('energy_meter_02'),  //energia szafa
+                24: homeDefinition.diffValue('energy_meter_04'), //eneergia teletechnika
+                25: homeDefinition.diffValue('energy_meter_05'), //reku
+                26: homeDefinition.diffValue('energy_meter_06'), //kuchnia
+                27: homeDefinition.diffValue('energy_meter_07') //pralnia
             }
         },
         2: {
@@ -211,7 +217,8 @@ export class homeDefinition {
             },
             21: {
                 0: 'outputs_02 & (1 << 3) != 0', //pompa dół
-                1: 'outputs_02 & (1 << 4) != 0' //pompa góra
+                1: 'outputs_02 & (1 << 4) != 0', //pompa góra
+                2: 'fuel_level_00'
             },
             30: {
                 0: 'inputs_04 & (1 << 5) != 0', //S32 - pompy
@@ -222,7 +229,7 @@ export class homeDefinition {
             0: { //swiateczne
                 0: 'outputs_13 & (1 << 0) != 0', // w podbitce
                 1: 'outputs_15 & (1 << 5) != 0', // gniazdko na terenie
-                2: '0' // choinka w domu
+                2: 'outputs_14 & (1 << 2) != 0' // choinka w domu
             }
         }
     }
