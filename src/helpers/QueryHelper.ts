@@ -16,7 +16,7 @@ export class QueryHelper {
     }
 
     public static buildSensorStateSql(schema: ISensorsSchema): any {
-        let query: string = '';
+        let query: string = 'date';
         for(let key in schema) {
             if (query.length > 0) 
                 query += ', ';
