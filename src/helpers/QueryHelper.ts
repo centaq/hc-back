@@ -39,7 +39,7 @@ export class QueryHelper {
             let where = '0=1';
             if (q == 'cd') 
                 where = 'date_stamp = CURDATE()';
-            query[q] = 'SELECT ' + query[q] + ' FROM ' + homeDefinition.stateTable + ' WHERE ' + where;
+            query[q] = 'SELECT ' + query[q] + ' FROM ' + homeDefinition.stateTable + ' WHERE ' + where + ' AND minute_tick';
         }
         return query;
     }
