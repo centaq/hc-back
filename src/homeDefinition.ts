@@ -78,6 +78,19 @@ export class homeDefinition {
                 51: 'pressure_level_01',
                 52: 'pressure_level_02',
                 53: 'pressure_level_03',
+
+
+                60: 'temperature_44', //CO
+                61: 'temperature_45', //CO
+                62: 'temperature_46', //CWU
+                63: 'temperature_47', //CWU
+                64: 'temperature_48', //powrot
+                65: 'temperature_49', //spaliny
+                66: 'temperature_50', //zawor wew
+                67: 'temperature_51', //zawor wew
+                68: 'temperature_52', //zawor zew
+                69: 'temperature_53', //zawor zew
+                70: 'temperature_54', //CWU obnizenie temp
             },
             14: { //szafa
                 1: 'temperature_42', //temperatura
