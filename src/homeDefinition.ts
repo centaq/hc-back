@@ -202,11 +202,11 @@ export class homeDefinition {
                 23: 'last_movement_23', //'alarm taras zewnatrz'
             },
             11: {
-                0: 'LEAST(9999, last_movement_00, last_movement_01, last_movement_02, last_movement_03, last_movement_04, last_movement_05, last_movement_06, last_movement_10)', //'parter'
-                1: 'LEAST(9999, last_movement_07, last_movement_08, last_movement_09)', //garaz
-                2: 'LEAST(9999, last_movement_11, last_movement_12, last_movement_13, last_movement_14, last_movement_15, last_movement_16, last_movement_17, last_movement_18, last_movement_19, last_movement_20)', //'pietro'
-                3: 'LEAST(9999, last_movement_21)', //'gospodarczy'
-                4: 'LEAST(9999, last_movement_22, last_movement_22)', //'zewnetrzne'
+                0: 'LEAST(last_movement_00, last_movement_01, last_movement_02, last_movement_03, last_movement_04, last_movement_05, last_movement_06, last_movement_10)', //'parter'
+                1: 'LEAST(last_movement_07, last_movement_08, last_movement_09)', //garaz
+                2: 'LEAST(last_movement_11, last_movement_12, last_movement_13, last_movement_14, last_movement_15, last_movement_16, last_movement_17, last_movement_18, last_movement_19, last_movement_20)', //'pietro'
+                3: 'last_movement_21', //'gospodarczy'
+                4: 'LEAST(last_movement_22, last_movement_22)', //'zewnetrzne'
             },
             20: { //ogrzewanie
                 1: 'outputs_00 & (1 << 0) != 0', //salon
