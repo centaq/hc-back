@@ -95,6 +95,7 @@ export class DataHandler {
                 sensors: tmp
             }
         }
+        result['date'] = data['date'].data;
         return result;
     }
 
