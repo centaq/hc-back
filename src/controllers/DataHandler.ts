@@ -102,7 +102,8 @@ export class DataHandler {
     public static async getStats(param: any) {
         let data: any = [];
         const stat = {period: param.period, points: 60};
-        let tmp = await SQLHelper.executeQuery(QueryHelper.buildStatsSql(param.stats, stat));
+        let count: any = await SQLHelper.executeQuery(QueryHelper.buildStatsCountSql(stat));
+        let tmp = await SQLHelper.executeQuery(QueryHelper.buildStatsSql(param.stats, stat, count[0]["c"]));
         return {data: tmp, guid: param.guid};
     }
 

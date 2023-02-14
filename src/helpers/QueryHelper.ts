@@ -44,32 +44,38 @@ export class QueryHelper {
         return query;
     }
 
-    public static buildStatSql(key: string, stat: any): any {
+    public static buildStatSql(key: string, stat: any): any { //statsy pod wartosciami
         const col = homeDefinition.translateToStateSql(key) + ' AS `val`';
-        return this.buildStatsSqlInternal(stat, col, "val");
+        return this.buildStatsSqlInternal('state', stat, col, 1000);
     }
 
-    public static buildStatsSql(keys: [string], stat: any): any {
+    public static buildStatsSql(keys: [string], stat: any, count: number): any {
         let col: string = 'date';
-        for(let key of keys) {
-            //col += ", " + homeDefinition.previousRecord(key, 1) + ' AS `' + key + '`';
-            col += ", " + key + ' AS `' + key + '`';
+        let table: string = 'state';
+        let containsAggr: boolean = false;
+        for(let key of keys) { 
+            let path: string[] = key.split('.');
+            console.log(path);
+            if (path.length > 2 && path[0] == 'avg' && path[1] == 'cd') {
+                table = 'day_aggregation';
+                containsAggr = true;
+                col += ", " + path[2] + ' AS `' + key + '`';
+            } else {
+                col += ", " + key + ' AS `' + key + '`';
+            }
         }
-        return this.buildStatsSqlInternal(stat, col, 'date,' + keys.join(","));
+        return this.buildStatsSqlInternal(table, stat, col, count);
     }
 
-    private static buildStatsSqlInternal(stat: any, cols: string, colsName: string): any {
-        let where = [];
-        let points = stat.points;
-        let period = stat.period;
-        if (period > points) {
-            where.push('hour_tick = 1');
-        }
-        else {
-            period *= 60;
-            where.push('minute_tick = 1');
-        }
-        where.push('`date` >= DATE_SUB(NOW(), INTERVAL ' + stat.period + ' HOUR)');
+    public static buildStatsCountSql(stat: any): string {
+        let query = `SELECT COUNT(1) AS c FROM state WHERE ` + this.getStatsQueryWhereClause(stat.points, stat.period);
+        console.log(query);
+        return query;
+    }
+
+    private static buildStatsSqlInternal(table: string, stat: any, colsName: string, count: number): any {
+
+        //where.push('`date` >= DATE_SUB(NOW(), INTERVAL ' + stat.period + ' HOUR)');
         /*if (stat.type == 'minute') { 
             where.push('minute_tick = 1');
         } else if (stat.type == 'hour') {
@@ -88,20 +94,76 @@ export class QueryHelper {
         /* return 'SELECT ' + colsName + ' FROM ( ' +
             'SELECT ID, ' + cols + ' FROM state WHERE ' + where.join(' AND ') + ' ORDER BY ID DESC LIMIT ' + points +
             ') AS s ORDER BY ID';
-*/
-        let c = `SELECT ` + colsName + ` FROM (
-            SELECT 
-                @row := @row + 1 AS rownum, 
-                ` + cols + `
-            FROM 
-                (SELECT @row:=0)r, state
+
+let c = `SELECT ` + colsName + ` FROM (
+    SELECT 
+        @row := @row + 1 AS rownum, 
+        ` + cols + `
+    FROM 
+        (SELECT @row:=0)r, state
+    WHERE 
+        ` + where.join(' AND ') + `
+    ORDER BY ID 
+) numbered
+WHERE 
+    (rownum % GREATEST(1, FLOOR((SELECT COUNT(1) FROM state WHERE ` + where.join(' AND ') + `)/60))) = 0
+ORDER BY rownum`;*/
+        let where = "";
+        if (table == 'day_aggregation') {
+            where = '`date` >= DATE_SUB(NOW(), INTERVAL ' + (stat.period + 1) + ' HOUR)';
+        } else {
+            where = this.getStatsQueryWhereClause(stat.points, stat.period + 1);
+        }
+        let points = stat.points;
+        let period = stat.period;
+        console.log(points);
+        console.log(period);
+        console.log(stat);
+        console.log(colsName);
+
+        let c = "";
+        console.log(count);
+        if (period > points || table == 'day_aggregation') {
+            
+            c = `SELECT ` + colsName + ` 
+                FROM ` + table + ` 
+                WHERE ` + where + ` 
+                LIMIT ` + count ;
+        } else {
+            c = `SELECT ` + colsName + ` FROM (
+                    SELECT ID,` + colsName + ` 
+                    FROM ` + table + ` 
+                    WHERE ` + where + `
+                    ORDER BY ID DESC 
+                    LIMIT ` + (count - 1) + `) AS c`;
+            if (period >= 24) {
+                c += ` WHERE minute(c.date) % 15 = 0`;
+            } else if (period >= 6) {
+                c += ` WHERE minute(c.date) % 5 = 0`;
+            } 
+            c += ` ORDER BY ID `;
+        }
+        /*let c = `(SELECT COUNT(1) FROM state
             WHERE 
                 ` + where.join(' AND ') + `
-            ORDER BY ID 
-        ) numbered
-        WHERE 
-            (rownum % GREATEST(1, FLOOR((SELECT COUNT(1) FROM state WHERE ` + where.join(' AND ') + `)/60))) = 0
-        ORDER BY rownum`;
+            ) `;*/
+        console.log(c);
         return c;
+    }
+
+    private static getStatsQueryWhereClause(points: number, period: number) : string {
+        let where = [];
+        if (period < 24) {
+            where.push('`date` >= DATE_SUB(NOW(), INTERVAL ' + period + ' HOUR)');
+        } else {
+            where.push('`date_stamp` >= DATE_SUB(NOW(), INTERVAL ' + period + ' HOUR)');
+        }
+        if (period > points) {
+            where.push('hour_tick');
+        }
+        else {
+            where.push('minute_tick');
+        }
+        return where.join(' AND ');
     }
 }
