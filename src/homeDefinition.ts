@@ -231,7 +231,9 @@ export class homeDefinition {
             21: {
                 0: 'outputs_02 & (1 << 3) != 0', //pompa dół
                 1: 'outputs_02 & (1 << 4) != 0', //pompa góra
-                2: 'fuel_level_00'
+                2: 'fuel_level_00',
+                3: 'heater_state',
+                4: 'heater_state = 2'
             },
             30: {
                 0: 'inputs_04 & (1 << 5) != 0', //S32 - pompy
