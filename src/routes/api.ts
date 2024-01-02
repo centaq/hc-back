@@ -44,7 +44,8 @@ export class APIRoutes {
         });
 
         app.route('/api/action').post(async(req: Request, res: Response) => {
-            DataHandler.insertAction(req.body);
+            const user = SessionHelper.getLoggedUser(req.cookies.session);
+            DataHandler.insertAction(user, req.body);
             res.status(200).send({result: 'OK'});
         });
 

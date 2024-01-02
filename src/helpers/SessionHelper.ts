@@ -42,4 +42,9 @@ export class SessionHelper {
             result: false
         };
     }
+
+    public static getLoggedUser(session: string): string {
+        let sessionData = FileStorage.read('sessions', session);
+        return sessionData.user;
+    }
 }

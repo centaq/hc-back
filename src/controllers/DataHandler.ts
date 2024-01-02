@@ -16,10 +16,11 @@ export class DataHandler {
         callback(result);
     }
 
-    public static async insertAction(req: IStateChange) {
+    public static async insertAction(user: string, req: IStateChange) {
         console.log("insertAction");
         var param: any[] = [];
         console.log(req);
+        param.push(user);
         if (req.type !== undefined) {
             if (req.type == "light")
                 param.push(1);
@@ -40,7 +41,7 @@ export class DataHandler {
         param.push(req.cmd);
         param.push(req.value);
         
-        let tmp : any = await SQLHelper.executeQuery('INSERT INTO action_queue (floor, room, sensor, cmd, value) VALUES (?,?,?,?,?)', param);
+        let tmp : any = await SQLHelper.executeQuery('INSERT INTO action_queue (user, timestamp, floor, room, sensor, cmd, value) VALUES (?,NOW(),?,?,?,?,?)', param);
         var id = tmp.insertId;
         await PLCNotifier.notify(id);
     }
