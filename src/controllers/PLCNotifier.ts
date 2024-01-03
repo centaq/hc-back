@@ -16,9 +16,11 @@ export class PLCNotifier {
         console.log(this.config.port);
         this.client.connect(this.config.port, this.config.host, () => {
             console.log('Connected');
-            const cmd : Uint8Array = new Uint8Array(2);
+            const cmd : Uint8Array = new Uint8Array(4);
             cmd[0] = 2;
             cmd[1] = 1;
+            cmd[2] = Math.floor((id % 65535) / 256);
+            cmd[3] = id % 256;
             this.client.write(cmd);
             this.client.end();
         }); 
