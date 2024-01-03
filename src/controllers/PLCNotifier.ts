@@ -21,6 +21,7 @@ export class PLCNotifier {
             cmd[1] = 1;
             cmd[2] = Math.floor((id % 65535) / 256);
             cmd[3] = id % 256;
+            console.log(cmd);
             this.client.write(cmd);
             this.client.end();
         }); 
