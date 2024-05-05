@@ -8,13 +8,13 @@ export class homeDefinition {
     private static def: any = {
         0: {
             1: { //podlewanie
-                0: 1, //`watering_enable`,
-                1: 'outputs_05 & (1 << 0) != 0',
-                2: 'outputs_05 & (1 << 0) != 0',
-                3: 'outputs_05 & (1 << 0) != 0',
+                0: 'watering_enabled', //`watering_enable`,
+                1: 'outputs_16 & (1 << 1) != 0', //swierki 129
+                2: 'outputs_16 & (1 << 0) != 0', //ogrodek 128
+                3: 'outputs_16 & (1 << 2) != 0', // trawa 130
                 101: 0,//'watering_auto_00 & (1 << 0) != 0',
                 102: 1,//'watering_auto_00 & (1 << 1) != 0'
-                103: 0
+                103: 'watering_enabled'
             },
             2: { //oswietlenie zewnetrzne
                 0: 'outputs_12 & (1 << 4) != 0', //swiatlo nad garazem
@@ -173,7 +173,8 @@ export class homeDefinition {
             0: { //woda
                 1: 'pressure_level_00',  //cisnienie wody
                 2: 'NOT ' + this.output(21),  //zamówr wody
-                3: 'NOT ' + this.output(121)  //przekaznik pompy
+                3: 'NOT ' + this.output(121),  //przekaznik pompy
+                4: 'watering_pump_active = 1'
             },
             10: { //alarm
                 0: 'last_movement_00', //'wiatrolap'
