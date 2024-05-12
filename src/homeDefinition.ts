@@ -237,8 +237,28 @@ export class homeDefinition {
                 4: 'heater_state = 2'
             },
             30: {
-                0: 'inputs_04 & (1 << 5) != 0', //S32 - pompy
-                1: 'inputs_04 & (1 << 4) != 0' //S34 - elektrozawory
+                0: 'overcurrent_protection_00 & (1 << 0) != 0', //PP
+                1: 'overcurrent_protection_00 & (1 << 1) != 0', //R1
+                2: 'overcurrent_protection_00 & (1 << 2) != 0', //S1
+                3: 'overcurrent_protection_00 & (1 << 3) != 0', //S5
+                4: 'overcurrent_protection_00 & (1 << 4) != 0', //R2
+                5: 'overcurrent_protection_00 & (1 << 5) != 0', //R3
+                6: 'overcurrent_protection_00 & (1 << 6) != 0', //R4
+                7: 'overcurrent_protection_00 & (1 << 7) != 0', //R5
+                8: 'overcurrent_protection_01 & (1 << 0) != 0', //S25
+                9: 'overcurrent_protection_01 & (1 << 1) != 0', //S26
+                10: 'overcurrent_protection_01 & (1 << 2) != 0', //R6
+                11: 'overcurrent_protection_01 & (1 << 3) != 0', //R7
+                12: 'overcurrent_protection_01 & (1 << 4) != 0', //R8
+                13: 'overcurrent_protection_01 & (1 << 5) != 0', //S32
+                14: 'overcurrent_protection_01 & (1 << 6) != 0', //S33
+                15: 'overcurrent_protection_01 & (1 << 7) != 0', //S34
+                16: 'overcurrent_protection_02 & (1 << 0) != 0', //S35
+                17: 'overcurrent_protection_02 & (1 << 1) != 0', //R9
+                18: 'overcurrent_protection_02 & (1 << 2) != 0', //S37
+                19: 'overcurrent_protection_02 & (1 << 3) != 0', //R10
+                20: 'overcurrent_protection_02 & (1 << 4) != 0', //S43
+                21: 'overcurrent_protection_02 & (1 << 5) != 0' //R11
             }
         },
         100: {  //specjalne
