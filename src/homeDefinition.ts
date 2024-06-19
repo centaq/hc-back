@@ -12,9 +12,11 @@ export class homeDefinition {
                 1: 'outputs_16 & (1 << 1) != 0', //swierki 129
                 2: 'outputs_16 & (1 << 0) != 0', //ogrodek 128
                 3: 'outputs_16 & (1 << 2) != 0', // trawa 130
+                4: 'outputs_16 & (1 << 3) != 0', // playground 131
                 101: 0,//'watering_auto_00 & (1 << 0) != 0',
                 102: 1,//'watering_auto_00 & (1 << 1) != 0'
-                103: 'watering_enabled'
+                103: 'watering_enabled',
+                104: 0
             },
             2: { //oswietlenie zewnetrzne
                 0: 'outputs_12 & (1 << 4) != 0', //swiatlo nad garazem
